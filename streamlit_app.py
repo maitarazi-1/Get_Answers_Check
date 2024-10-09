@@ -78,9 +78,10 @@ if uploaded_file is not None:
         # Combine all text in the selected column into one string
         combined_text = " ".join(df[selected_column].astype(str).tolist())
         
+        with st.spinner("Processing your request..."):
         # Send the combined text to the API with the provided bot_id
-        api_response = send_to_api(combined_text, bot_id)
-        extracted_text = extract_text_from_json(api_response)
+            api_response = send_to_api(combined_text, bot_id)
+            extracted_text = extract_text_from_json(api_response)
         
         # Display the extracted text
         #st.write(extracted_text)
