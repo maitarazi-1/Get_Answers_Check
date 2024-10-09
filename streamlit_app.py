@@ -1,94 +1,59 @@
 import streamlit as st
-import pandas as pd
-from io import StringIO
-import json
 import requests
-from api.langflow_script import run_flow
-from typing import Optional
+import json
 
-# Streamlit UI setup
-st.title("Langflow Document Processor")
-
-# Input field for Bot ID
-bot_id = st.text_input("Enter Bot ID Number:")
-
-# File uploader for CSV files
-uploaded_file = st.file_uploader("Upload your CSV document", type=["csv"])
-
-# Function to call Langflow API
-def run_flow(message: str, endpoint: str, tweaks: dict = None, api_key: Optional[str] = None) -> dict:
-    """
-    Run a flow with a given message and optional tweaks.
-    """
-    BASE_API_URL = "https://langflow-fe-jeen.delightfulwater-ecb5056f.westeurope.azurecontainerapps.io"
-    api_url = f"{BASE_API_URL}/api/v1/run/{endpoint}"
-    
+def send_to_api(text):
+    url = "https://langflow-fe-jeen.delightfulwater-ecb5056f.westeurope.azurecontainerapps.io/api/v1/run/38119a37-38a5-4566-810c-4ac486f0c7be?stream=false"
     payload = {
-        "input_value": message,
+        "input_value": text,
         "output_type": "chat",
         "input_type": "chat",
-    }
-    if tweaks:
-        payload["tweaks"] = tweaks
-    headers = None
-    if api_key:
-        headers = {"x-api-key": api_key}
-
-    response = requests.post(api_url, json=payload, headers=headers)
-    return response.json()
-
-# Function to process the document and call the Langflow API
-def process_and_run_flow(bot_id, document_content):
-    message = "Processing uploaded CSV document"
-    
-    # Create tweaks with the document content and bot_id
-    tweaks = {
-        "JeenAssistantTriggerComponentChainRequests-RyHsl": {
-            "bot_id": bot_id,
-            "input_value": document_content,
-            "apiKey": "JeenBVZZouiaEyM03xc4EEONhPsukfHZSMBVe7IkOBoZDLesgz4Az5Zc6Ueflc5nlTyG4252UWQ3hXUELH1vOKII9x81h6zPayh2cjqXEPkWMLC2iU6PoBJ2wXmrQZ71",
-            "app_name_aux": "Langflow",
-            "backend_host": "https://playground-gekoo-client-test.azurewebsites.net",
-            "strList": [],
-            "token": ""
+        "tweaks": {
+            "CustomComponent-Mc9Bb": {},
+            "ParseData-FiFMM": {},
+            "ParseData-PciqQ": {},
+            "JeenAssistantTriggerComponentChainRequests-RyHsl": {},
+            "ChatOutput-rJKBM": {},
+            "ChatInput-wWLuP": {},
+            "CustomComponent-BJz55": {},
+            "ParseData-lwUUv": {}
         }
     }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    response = requests.post(url, json=payload, headers=headers)
+    print("Raw API response:", response.text)
+    return response.json()
 
-    # Call the Langflow API
-    return run_flow(message=message, endpoint=bot_id, tweaks=tweaks)
-
-# Process the file when the user clicks the "Submit" button
-if st.button("Submit"):
-    if bot_id and uploaded_file:
+def extract_text_from_json(json_data):
+    try:
+        print("Raw JSON data:", json_data)
+        text = json_data['outputs'][0]['outputs'][0]['results']['message']['data']['text']
+        print("Extracted text before parsing:", text)
         try:
-            # Read the CSV file content
-            stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-            document_content = stringio.read()
+            text_data = json.loads(text)
+            return text_data['value']
+        except json.JSONDecodeError as json_error:
+            print(f"JSON parsing error: {str(json_error)}")
+            return text
+    except KeyError as key_error:
+        return f"Error extracting text: KeyError - {str(key_error)}"
+    except Exception as e:
+        return f"Error extracting text: {str(e)}"
 
-            # Run the Langflow flow with the bot ID and document content
-            response = process_and_run_flow(bot_id, document_content)
+st.title("Text to API Processor")
 
-            # Display the response from the Langflow API
-            st.write("Langflow API Response:")
-            st.json(response)
+user_input = st.text_area("Enter your text here:")
 
-            # Save response to a JSON file for download
-            response_file_path = "langflow_response.json"
-            with open(response_file_path, "w") as file:
-                json.dump(response, file, indent=2)
-
-            # Provide a download button for the response
-            with open(response_file_path, "rb") as file:
-                st.download_button(
-                    label="Download Processed Response",
-                    data=file,
-                    file_name="langflow_response.json",
-                    mime="application/json"
-                )
-
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
+if st.button("Send to API"):
+    if user_input.strip():
+        st.write("Sending text to API...")
+        api_response = send_to_api(user_input)
+        extracted_text = extract_text_from_json(api_response)
+        st.write("API Response:")
+        st.write(extracted_text)
     else:
-        st.warning("Please provide a valid Bot ID and upload a CSV file.")
-else:
-    st.info("Enter the Bot ID, upload a CSV file, then click Submit to proceed.")
+        st.warning("Please enter some text before sending.")
+
+st.write("Type your message, click the button, and see the API's response below.")
