@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import json
+import ast
 
 def send_to_api(text, bot_id):
     url = "https://langflow-fe-jeen.delightfulwater-ecb5056f.westeurope.azurecontainerapps.io/api/v1/run/38119a37-38a5-4566-810c-4ac486f0c7be?stream=false"
@@ -51,13 +52,16 @@ def send_to_api(text, bot_id):
     return response.json()
 
 def extract_text_from_json(json_data):
-    st.write("Raw JSON response:", json_data)
     try:
-        # Adjust the path to match the API's actual JSON structure
-        text = json_data.get('message', {}).get('data', {}).get('text', 'Text not found')
-        return text
-    except KeyError as key_error:
-        return f"Error extracting text: KeyError - {str(key_error)}"
+        output = json_data.get('outputs', [])
+        if output:
+            message_data = output[0].get('outputs', [{}])[0].get('results', {}).get('message', {}).get('data', {}).get('text', '')
+            if message_data:
+                message_data = ast.literal_eval(message_data)
+                value = message_data.get('value', 'Value not found')
+                formatted_text = value.replace('\n', '\n\n')
+                return formatted_text
+        return "No output found in the response."
     except Exception as e:
         return f"Error extracting text: {str(e)}"
 
@@ -69,20 +73,31 @@ uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     selected_column = df.columns[0]  # Automatically select the first column
-    #st.write("Automatically selected column:", selected_column)
     
     if st.button("Activate"):
-        #st.write(f"Processing column: {selected_column}")
-        
         # Combine all text in the selected column into one string
         combined_text = " ".join(df[selected_column].astype(str).tolist())
-        
-        #st.write("Combined Text:", combined_text)
         
         # Send the combined text to the API with the provided bot_id
         api_response = send_to_api(combined_text, bot_id)
         extracted_text = extract_text_from_json(api_response)
         
-        st.write("API Response:")
-        st.write(extracted_text)
+        # Display the extracted text
+        #st.write(extracted_text)
         st.write("---")
+
+        # Show download button only if extracted_text is available
+        if extracted_text and extracted_text != "No output found in the response.":
+            # Step 1: Save to a text file
+            file_name = "response.txt"
+            with open(file_name, "w") as f:
+                f.write(extracted_text)
+            
+            # Step 2: Allow the user to download the file
+            with open(file_name, "r") as f:
+                st.download_button(
+                    label="Download Response",
+                    data=f,
+                    file_name=file_name,
+                    mime="text/plain"
+                )
