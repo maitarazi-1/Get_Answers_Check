@@ -4,6 +4,81 @@ import requests
 import json
 import ast
 
+st.markdown("""
+    <style>
+    
+    .stTextInput input {
+        background-color: white;
+        border: 0.5px solid #E3E3E3 inside;
+    }
+    .stFileUploader button{
+            background-color: #F96DDF;
+            border: none;
+            color: black;
+            }
+    .stFileUploader button:hover{
+            background-color: #F96DDF;
+            border: none;
+            color: black;
+            transform: scale(1.05);  
+            }
+    .stFileUploader button:active{
+            background-color: #F96DDF;
+            border: none;
+            color: black;
+            }
+    .stFileUploader section{
+            background-color: white;
+            border: 0.5px solid #E3E3E3;
+            }
+    .stButton button{
+            background-color: #F96DDF;
+            border: none;
+            color: black;
+            }
+    .stButton button:hover{
+            background-color: #F96DDF;
+            border: none;
+            color: black;
+            transform: scale(1.05); 
+            }
+    .stSpinner div i {
+        color: red;
+    }
+    .stFileUploaderFile div button{
+            background-color: white;
+            border: none;
+            color: black;
+            }
+     .stFileUploaderFile div button:hover{
+            background-color: white;
+            border: none;
+            color: black;
+            }
+    .stFileUploaderFile div button:active{
+            background-color: white;
+            border: none;
+            color: black;
+            }
+    .stDownloadButton button{
+            background-color: #F96DDF;
+            border: none;
+            color: black;
+            }
+    .stDownloadButton button:hover{
+            background-color: #F96DDF;
+            border: none;
+            color: black;
+            transform: scale(1.05); 
+            }
+     .stDownloadButton button:active{
+            background-color: #F96DDF;
+            border: none;
+            color: black;
+            }
+    </style>
+""", unsafe_allow_html=True)
+
 def send_to_api(text, bot_id):
     url = "https://langflow-fe-jeen.delightfulwater-ecb5056f.westeurope.azurecontainerapps.io/api/v1/run/38119a37-38a5-4566-810c-4ac486f0c7be?stream=false"
     payload = {
