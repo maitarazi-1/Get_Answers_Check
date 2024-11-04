@@ -1,104 +1,18 @@
-**שאלה:** כמה עולה galaxy s23?
+**שאלה:** איזה סוג עובדים (מגדר וגיל) אחוז העזיבות בו היה הכי נמוך בשנת 2021?
 
-**תשובה:** 404: <!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-<meta charset="utf-8">
-
-<title>Error</title>
-
-</head>
-
-<body>
-
-<pre>Cannot POST /api/assistant/completion</pre>
-
-</body>
-
-</html>
+**תשובה:** לא יכול לענות לשאלה
 
 
 
+**שאלה:** אם בשנים 2023-2027 הרווח הנקי של רפאל יעלה על פי 5 מהרווח שלה בשנת 2022 מה יקרה?
 
-
-**שאלה:** באיזה צבעים יש galaxy s23 ultra?
-
-**תשובה:** 404: <!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-<meta charset="utf-8">
-
-<title>Error</title>
-
-</head>
-
-<body>
-
-<pre>Cannot POST /api/assistant/completion</pre>
-
-</body>
-
-</html>
+**תשובה:** לא יכול לענות לשאלה
 
 
 
+**שאלה:** אם אני טס לחול מה אני עושה עם הרכב של החברה?
 
-
-**שאלה:** כמה עולה galaxy s24?
-
-**תשובה:** 404: <!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-<meta charset="utf-8">
-
-<title>Error</title>
-
-</head>
-
-<body>
-
-<pre>Cannot POST /api/assistant/completion</pre>
-
-</body>
-
-</html>
-
-
-
-
-
-**שאלה:** מה ההבדל בין galaxy plus לבין הgalaxy ultra?
-
-**תשובה:** 404: <!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-<meta charset="utf-8">
-
-<title>Error</title>
-
-</head>
-
-<body>
-
-<pre>Cannot POST /api/assistant/completion</pre>
-
-</body>
-
-</html>
-
-
+**תשובה:** היי! איזה כיף שאתה מתעניין בסמארטפון חדש! אני כאן כדי לעזור לך למצוא את המכשיר המושלם בשבילך. יש לך כבר רעיון מה אתה מחפש בסמארטפון? אולי מצלמה מעולה לצילום תמונות, מסך גדול לצפייה בסרטים, או אולי סוללה חזקה שתספיק לכל היום? תן לי קצת כיוון ואני אעזור לך לבחור את המכשיר הכי מתאים לך!
 
 
 

@@ -80,7 +80,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def send_to_api(text, bot_id):
-    url = "https://langflow-fe-jeen.delightfulwater-ecb5056f.westeurope.azurecontainerapps.io/api/v1/run/38119a37-38a5-4566-810c-4ac486f0c7be?stream=false"
+    url = "https://langflow-fe-jeen.delightfulwater-ecb5056f.westeurope.azurecontainerapps.io/api/v1/run/d514f10c-3c03-408a-9f83-aa35c69696d5?stream=false"
     payload = {
         "input_value": text,
         "output_type": "chat",
